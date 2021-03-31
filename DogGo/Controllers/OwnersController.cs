@@ -44,7 +44,7 @@ namespace DogGo.Controllers
         // GET: Owners/Details/5
         public ActionResult Details(int id)
         {
-            Owner owner = _ownerRepo.GetOwnerById(id);
+            Owner owner = _ownerRepo.GetOwnerById(GetCurrentUserId());
             List<Dog> dogs = _dogRepo.GetDogsByOwnerId(owner.Id);
             List<Walker> walkers = _walkerRepo.GetWalkersInNeighborhood(owner.NeighborhoodId);
 
@@ -181,13 +181,18 @@ namespace DogGo.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity));
 
-            return RedirectToAction("Index", "Dogs");
+            return RedirectToAction("Details", "Owners");
         }
     public async Task<ActionResult> Logout()
     {
         await HttpContext.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
+        private int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
+        }
     }
 }
 

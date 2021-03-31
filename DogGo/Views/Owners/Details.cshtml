@@ -3,7 +3,7 @@
 
 @{ ViewData["Title"] = "Profile"; }
 <div>
-    <h1 class="mb-4">@Model.Owner.Name</h1>
+    <h1 class="mb-4">  @Html.ActionLink(Model.Owner.Name, "Edit", new { id = Model.Owner.Id }) </h1>
 
     <section class="container">
         <img style="width:100px;float:left;margin-right:20px"
