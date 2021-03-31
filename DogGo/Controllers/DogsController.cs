@@ -105,8 +105,13 @@ namespace DogGo.Controllers
         public ActionResult Delete(int id)
         {
             Dog dog = _dogRepo.GetDogById(id);
+            int userId = GetCurrentUserId();
 
-            return View(dog);
+            if (dog == null || dog.OwnerId != userId)
+            {
+                return NotFound();
+            }
+                return View(dog);
         }
         // POST: DogController/Delete/5
         [HttpPost]
